@@ -4,7 +4,7 @@ pages_build_output_dir = "./dist"
 
 kv_namespaces = [
   # KV namespace para dados do SonicJS
-  { binding = "KV", id = "d702e8c1b66847f8b3758057a73a8ecc", preview_id = "d702e8c1b66847f8b3758057a73a8ecc" }
+  { binding = "sonicjs_kv", id = "d702e8c1b66847f8b3758057a73a8ecc", preview_id = "d702e8c1b66847f8b3758057a73a8ecc" }
 ]
 
 [[d1_databases]]
