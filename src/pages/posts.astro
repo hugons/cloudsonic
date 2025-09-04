@@ -1,4 +1,6 @@
 ---
+import MarkdownRenderer from '../components/MarkdownRenderer.tsx';
+
 const response = await fetch(`${Astro.url.origin}/api/v1/posts`);
 let posts = [];
 let error = null;
@@ -67,9 +69,9 @@ if (response.ok) {
             <h2 class="text-2xl font-semibold text-gray-900 mb-2">
               {post.title}
             </h2>
-            <p class="text-gray-700 mb-4">
-              {post.body}
-            </p>
+            <div class="text-gray-700 mb-4">
+              <MarkdownRenderer client:load content={post.body} />
+            </div>
             {post.image && (
               <img
                 src={post.image}

@@ -1,4 +1,6 @@
 ---
+import MarkdownRenderer from '../components/MarkdownRenderer.tsx';
+
 const response = await fetch(`${Astro.url.origin}/api/v1/pages?slug=home&status=published`);
 let homepageContent = null;
 
@@ -54,11 +56,13 @@ if (response.ok) {
         {homepageContent ? (
           <>
             <h1 class="text-4xl font-bold text-gray-900 mb-8">{homepageContent.title}</h1>
-            <div class="text-lg text-gray-700 leading-relaxed mb-8 prose prose-lg mx-auto">
-              {homepageContent.content}
+            <div class="text-lg text-gray-700 leading-relaxed mb-8">
+              <MarkdownRenderer client:load content={homepageContent.content} />
             </div>
             {homepageContent.excerpt && (
-              <p class="text-md text-gray-600 italic mb-8">{homepageContent.excerpt}</p>
+              <div class="text-md text-gray-600 italic mb-8">
+                <MarkdownRenderer client:load content={homepageContent.excerpt} />
+              </div>
             )}
           </>
         ) : (
