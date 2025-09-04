@@ -1,3 +1,15 @@
+---
+const response = await fetch(`${Astro.url.origin}/api/v1/pages?slug=home&status=published`);
+let homepageContent = null;
+
+if (response.ok) {
+  const data = await response.json();
+  if (data.data && data.data.length > 0) {
+    homepageContent = data.data[0];
+  }
+}
+---
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -39,10 +51,24 @@
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto py-16 px-4">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-8">Welcome to SonicJS</h1>
-        <p class="text-lg text-gray-700 leading-relaxed mb-8">
-          Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
-        </p>
+        {homepageContent ? (
+          <>
+            <h1 class="text-4xl font-bold text-gray-900 mb-8">{homepageContent.title}</h1>
+            <div class="text-lg text-gray-700 leading-relaxed mb-8 prose prose-lg mx-auto">
+              {homepageContent.content}
+            </div>
+            {homepageContent.excerpt && (
+              <p class="text-md text-gray-600 italic mb-8">{homepageContent.excerpt}</p>
+            )}
+          </>
+        ) : (
+          <>
+            <h1 class="text-4xl font-bold text-gray-900 mb-8">Welcome to SonicJS</h1>
+            <p class="text-lg text-gray-700 leading-relaxed mb-8">
+              Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.
+            </p>
+          </>
+        )}
       </div>
     </div>
   </body>
