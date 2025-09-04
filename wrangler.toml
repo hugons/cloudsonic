@@ -1,0 +1,55 @@
+name = "cloudsonic"
+compatibility_date = "2024-09-01" # ajusta se necessário
+pages_build_output_dir = "./dist"
+
+kv_namespaces = [
+  # KV namespace para dados do SonicJS
+  { binding = "KV", id = "d702e8c1b66847f8b3758057a73a8ecc", preview_id = "d702e8c1b66847f8b3758057a73a8ecc" }
+]
+
+[[d1_databases]]
+# D1 para persistência
+binding = "D1"
+database_name = "sonicjs"
+database_id = "863091ac-ab25-4c93-8239-58669df4b3db"
+
+[[r2_buckets]]
+# R2 para ficheiros/media
+binding = "R2STORAGE"
+bucket_name = "sonicjs"
+
+[vars]
+# auth settings
+INVALIDATE_USER_SESSIONS = false
+REQUIRE_EMAIL_CONFIRMATION = true
+USERS_CAN_REGISTER = true
+
+# password reset settings
+RESET_PASSWORD_EXPIRATION_TIME = 1200000          # 20 minutes in milliseconds
+PASSWORD_RESET_EMAIL_SUBJECT = "SonicJS Password Reset"
+
+# cache
+DISABLED_CACHE = true
+
+# email service (Resend) – desliga se não usares
+RESEND_API_KEY = "CHANGEME"
+
+# email settings
+EMAIL_ENABLED = false # muda para true quando tiveres API Key válida
+EMAIL_FROM = "me@example.com"
+EMAIL_BASE_URL = "https://example.com"
+EMAIL_FROM_NAME = "Example"
+EMAIL_SEND_WELCOME_EMAIL = true
+
+# one time password settings
+ONE_TIME_PASSWORD_CHARACTER_LENGTH = 5
+ONE_TIME_PASSWORD_EXPIRATION_TIME = 1200000 # 20 minutes in milliseconds
+ONE_TIME_PASSWORD_EMAIL_SUBJECT = "Your SonicJS OTP"
+
+# email confirmation settings
+EMAIL_CONFIRMATION_SUBJECT = "Your SonicJS Email Confirmation"
+EMAIL_CONFIRMATION_REDIRECT_URL = "https://cloudsonic.pages.dev/login"
+AUTO_LOGIN_AFTER_EMAIL_CONFIRMATION = true
+
+# testing
+TESTING_MODE = true # não usar em produção
