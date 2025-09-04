@@ -1,0 +1,102 @@
+---
+const response = await fetch(`${Astro.url.origin}/api/v1/posts`);
+let posts = [];
+let error = null;
+
+if (response.ok) {
+  const data = await response.json();
+  posts = data.data || [];
+} else {
+  error = `Failed to load posts: ${response.status}`;
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artigos - SonicJS</title>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <h2 class="text-xl font-bold text-gray-900">SonicJS</h2>
+            </div>
+            <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <a href="/" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Home
+              </a>
+              <a href="/posts" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                Artigos
+              </a>
+            </div>
+          </div>
+          <div class="hidden sm:ml-6 sm:flex sm:items-center">
+            <a
+              href="/admin"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Admin
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto py-8 px-4">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Artigos</h1>
+
+      {error && (
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
+
+      {posts.length === 0 && !error && (
+        <p class="text-gray-600">No posts found.</p>
+      )}
+
+      <div class="space-y-6">
+        {posts.map((post) => (
+          <article class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+              {post.title}
+            </h2>
+            <p class="text-gray-700 mb-4">
+              {post.body}
+            </p>
+            {post.image && (
+              <img
+                src={post.image}
+                alt={post.title}
+                class="w-full h-64 object-cover rounded-lg mb-4"
+              />
+            )}
+            {post.tags && post.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2 mb-4">
+                {post.tags.map((tag) => (
+                  <span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div class="text-sm text-gray-500">
+              User ID: {post.userId}
+            </div>
+            {post.updatedOn && (
+              <div class="text-sm text-gray-500">
+                Updated: {new Date(post.updatedOn).toLocaleDateString()}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </body>
+</html>
