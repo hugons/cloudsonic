@@ -36,7 +36,7 @@ function Table({ tableConfig, token }) {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [data, setData] = useState(null);
-  const [sorting, setSorting] = useState<SortingState>([]); // can set initial sorting state here
+  const [sorting, setSorting] = useState([]); // can set initial sorting state here
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(false);
@@ -67,7 +67,7 @@ function Table({ tableConfig, token }) {
 
   // console.log("columns-->", columns);
 
-  function truncateText(text: string, maxLength: number): string {
+  function truncateText(text, maxLength) {
     if (text) {
       if (text.length <= maxLength) {
         return text;
@@ -135,7 +135,7 @@ function Table({ tableConfig, token }) {
   const getData = (originPath) => {
       if (originPath) {
         fetch(`${originPath}`).then(async (response) => {
-          const responseData: { data: any } = await response.json();
+          const responseData = await response.json();
           setData(responseData.data);
           setLoading(false);
         });
@@ -182,7 +182,7 @@ function Table({ tableConfig, token }) {
     );
 
     return (
-      <div className="bg-gray-900">
+      <div className="bg-white">
         {showDeleteConfirmation && (
           <DeleteConfirmation
             open={showDeleteConfirmation}
@@ -192,11 +192,11 @@ function Table({ tableConfig, token }) {
         )}
 
         <div className="mx-auto">
-          <div className="bg-gray-900 py-10">
+          <div className="bg-white py-10">
             <div className="px-4 sm:px-6 lg:px-8">
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
-                  <h1 className="text-base font-semibold leading-6 text-white">
+                  <h1 className="text-base font-semibold leading-6 text-gray-900">
                     {tableConfig.name.toUpperCase()}
                   </h1>
                 </div>
@@ -218,14 +218,12 @@ function Table({ tableConfig, token }) {
                   <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                     <table className="min-w-full divide-y divide-gray-300">
                       <thead>
-                        {table.getHeaderGroups().map((headerGroup) => {
-                          return (
+                        {table.getHeaderGroups().map((headerGroup) => (
                             <tr key={headerGroup.id}>
-                              {headerGroup.headers.map((header) => {
-                                return (
+                              {headerGroup.headers.map((header) => (
                                   <th
                                     scope="col"
-                                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100"
+                                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                                     onClick={header.column.getToggleSortingHandler()}
                                   >
                                     <a href="#" className="group inline-flex">
@@ -241,52 +239,11 @@ function Table({ tableConfig, token }) {
                                       ] ?? null}
                                     </a>
                                   </th>
-
-                                  // <th
-                                  //   key={header.id}
-                                  //   scope="col"
-                                  //   className="px-3 py-3.5 text-left text-sm font-semibold text-gray-100"
-                                  // >
-                                  //   <a href="#" className="group inline-flex">
-                                  //     {header.isPlaceholder ? null : (
-                                  //       <div
-                                  //         className={
-                                  //           header.column.getCanSort()
-                                  //             ? "cursor-pointer"
-                                  //             : ""
-                                  //         }
-                                  //         onClick={header.column.getToggleSortingHandler()}
-                                  //         title={
-                                  //           header.column.getCanSort()
-                                  //             ? header.column.getNextSortingOrder() ===
-                                  //               "asc"
-                                  //               ? "Sort ascending"
-                                  //               : header.column.getNextSortingOrder() ===
-                                  //                   "desc"
-                                  //                 ? "Sort descending"
-                                  //                 : "Clear sort"
-                                  //             : undefined
-                                  //         }
-                                  //       >
-                                  //         {flexRender(
-                                  //           header.column.columnDef.header,
-                                  //           header.getContext()
-                                  //         )}
-                                  //         {{
-                                  //           asc: arrowDown(),
-                                  //           desc: arrowUp(),
-                                  //         }[
-                                  //           header.column.getIsSorted() as string
-                                  //         ] ?? null}
-                                  //       </div>
-                                  //     )}
-                                  //   </a>
-                                  // </th>
-                                );
-                              })}
+                                )
+                              )}
                             </tr>
-                          );
-                        })}
+                          )
+                        )}
                       </thead>
                       <tbody>
                         {table.getRowModel().rows.map((row) => {
@@ -297,7 +254,7 @@ function Table({ tableConfig, token }) {
                                 return (
                                   <td
                                     key={cell.id}
-                                    className="whitespace-nowrap px-3 py-4 text-sm text-gray-300"
+                                    className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                                   >
                                     {flexRender(
                                       cell.column.columnDef.cell,
@@ -309,7 +266,7 @@ function Table({ tableConfig, token }) {
                               <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                 <a
                                   href={`/admin/forms/${tableConfig.route}/${row.getValue("id")}`}
-                                  className="text-indigo-400 hover:text-indigo-300"
+                                  className="text-indigo-600 hover:text-indigo-900"
                                 >
                                   Edit
                                 </a>
@@ -319,7 +276,7 @@ function Table({ tableConfig, token }) {
                                   onClick={() =>
                                     handleDeleteClick(row.getValue("id"))
                                   }
-                                  className="text-indigo-400 hover:text-indigo-300"
+                                  className="text-indigo-600 hover:text-indigo-900"
                                 >
                                   Delete
                                 </button>
@@ -341,7 +298,7 @@ function Table({ tableConfig, token }) {
                       table.previousPage();
                     }}
                     disabled={table.getCanPreviousPage()}
-                    className="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-300"
+                    className="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     <ArrowLongLeftIcon
                       aria-hidden="true"
@@ -352,7 +309,7 @@ function Table({ tableConfig, token }) {
                 </div>
                 <div className="hidden md:-mt-px md:flex">
                   {pageArray.map((pageNumber) => 
-                    <Button onClick={() => table.setPageIndex(pageNumber-1)} className={"inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium hover:border-gray-300 hover:text-gray-300" + pagerColor(pageNumber)}>
+                    <Button onClick={() => table.setPageIndex(pageNumber-1)} className={"inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium hover:border-gray-300 hover:text-gray-700" + pagerColor(pageNumber)}>
                       {pageNumber}
                     </Button>
                   )}
@@ -369,7 +326,7 @@ function Table({ tableConfig, token }) {
                       table.nextPage();
                     }}
                     disabled={table.getCanNextPage()}
-                    className="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-300"
+                    className="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     Next
                     <ArrowLongRightIcon
@@ -391,7 +348,7 @@ function Table({ tableConfig, token }) {
 
 const arrowDown = () => {
   return (
-    <span className="ml-2 flex-none rounded bg-gray-800 text-gray-200 group-hover:bg-gray-700">
+    <span className="ml-2 flex-none rounded bg-gray-100 text-gray-400 group-hover:bg-gray-200">
       <ChevronDownIcon aria-hidden="true" className="h-5 w-5" />
     </span>
   );
@@ -399,7 +356,7 @@ const arrowDown = () => {
 
 const arrowUp = () => {
   return (
-    <span className="ml-2 flex-none rounded bg-gray-800 text-gray-200 group-hover:bg-gray-700">
+    <span className="ml-2 flex-none rounded bg-gray-100 text-gray-400 group-hover:bg-gray-200">
       <ChevronUpIcon aria-hidden="true" className="h-5 w-5" />
     </span>
   );
